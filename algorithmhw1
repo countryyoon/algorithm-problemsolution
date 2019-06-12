@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+	//입력받기
+	int n, m;
+	while (1) {
+		cin >> n >> m;
+		if (m >= 1 && m <= 100) {
+			if (n >= m && n <= 1000000)
+				break;
+		}
+	}
+	string T, P;
+	cin >> T >> P;
+	int count1 = 0, count2 = 0; //일치 횟수 세기
+	int cnt1 = 0, cnt2 = 0; //비교 횟수 세기
+
+	//방법1
+	for (int i = 0; i < n - m + 1; i++) {
+		bool isMatch = true;
+		for (int j = 0; j < m; j++) {
+			cnt1++;
+			if (T[i + j] != P[j]) {
+				isMatch = false;
+				break;
+			}
+		}
+		if (isMatch == true)
+			count1++;
+	}
+
+	//방법2
+	//실패함수구하기
+	int* pi = new int[m]();
+	int j = 0;
+	for (int i = 1; i < m; i++) {
+		while (j > 0 && P[i] != P[j])
+			j = pi[j - 1];
+		if (P[i] == P[j])
+			pi[i] = ++j;
+	}
+	//KMP알고리즘
+	int i = 0; j = 0;
+	while (i < n) {
+		cnt2++;
+		if (T[i] == P[j]) {
+			if (j == m - 1) {
+				count2++;
+				i++;
+				j = 0;
+			}
+			else {
+				i++;
+				j++;
+			}
+		}
+		else if (j > 0) {
+			j = pi[j - 1];
+		}
+		else {
+			i++;
+		}
+	}
+
+	//출력 및 확인
+	cout << count1 << "\t" << cnt1 << endl;
+	cout << count2 << "\t" << cnt2 << endl;
+	return 0;
+}
