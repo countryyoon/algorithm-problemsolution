@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	// 행렬 입력받기
+	int rowSize, columnSize;
+	int nb;
+	cin >> rowSize >> columnSize;
+
+	int** arr = new int*[rowSize];
+	for (int i = 0; i < columnSize; i++) {
+		arr[i] = new int[columnSize];
+	}
+
+	for (int i = 0; i < rowSize; i++) {
+		for (int j = 0; j < columnSize; j++) {
+			cin >> nb;
+			arr[i][j] = nb;
+		}
+	}
+
+
+	// 경로값 행렬
+	int** costArr = new int*[rowSize];
+	for (int i = 0; i < columnSize; i++) {
+		costArr[i] = new int[columnSize]();
+	}
+
+
+	// 비용값 행렬
+	costArr[0][0] = arr[0][0];
+	for (int j = 1; j < columnSize; j++)
+		costArr[0][j] = costArr[0][j - 1] + arr[0][j];
+	for (int i = 1; i < rowSize; i++)
+		costArr[i][0] = costArr[i - 1][0] + arr[i][0];
+
+	for (int i = 1; i < rowSize; i++) {
+		for (int j = 1; j < columnSize; j++) {
+			if (costArr[i - 1][j] > costArr[i][j - 1])
+				costArr[i][j] = costArr[i - 1][j] + arr[i][j];
+			else
+				costArr[i][j] = costArr[i][j - 1] + arr[i][j];
+		}
+	}
+
+
+	// 최대 값 출력
+	cout << endl << costArr[rowSize - 1][columnSize - 1];
+}
+
