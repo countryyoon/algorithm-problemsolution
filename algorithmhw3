@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+	// 입력받기
+	int rowSize, columnSize;
+	
+	while (1) {
+		cin >> rowSize >> columnSize;
+		if (columnSize >= 3 && columnSize <= 100)
+			if (rowSize >= 3 && rowSize <= 100)
+				break;
+	}
+	
+	int n, m;
+	n = rowSize + 2;
+	m = columnSize + 2;
+
+	int** arr = new int*[n];
+	for (int i = 0; i < m; i++) {
+		arr[i] = new int[m];
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			arr[i][j] = 0;
+		}
+	}
+
+	for (int i = 1; i < rowSize + 1; i++) {
+		for (int j = 1; j < columnSize + 1; j++) {
+			cin >> arr[i][j];
+		}
+	}
+
+	// 최댓값 찾기
+	int sum = 0, maxsum = 0;
+	int n1, n2, n3, n4, n5, n6;
+
+	for (int i = 1; i <= rowSize; i++) {
+		for (int j = 1; j <= columnSize; j++) {
+
+			n1 = arr[i][j - 1] + arr[i][j] + arr[i - 1][j];
+			n2 = arr[i][j - 1] + arr[i][j] + arr[i + 1][j];
+			n3 = arr[i + 1][j] + arr[i][j] + arr[i][j + 1];
+			n4 = arr[i - 1][j] + arr[i][j] + arr[i][j + 1];
+			n5 = arr[i][j - 1] + arr[i][j] + arr[i][j + 1];
+			n6 = arr[i - 1][j] + arr[i][j] + arr[i + 1][j];
+			
+			sum = max(n1, n2);
+			sum = max(n3, sum);
+			sum = max(n4, sum);
+			sum = max(n5, sum);
+			sum = max(n6, sum);
+
+			maxsum = max(sum, maxsum);
+		}
+	}
+	cout << maxsum << endl;
+}
