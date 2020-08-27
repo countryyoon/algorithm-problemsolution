@@ -1,0 +1,32 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+long long solution(int n, vector<int> times) {
+    long long answer = 0;     
+    sort(times.begin(), times.end());
+    long long time_min = 1;
+    long long time_max = times.back()*(long long)n;
+    long long time_mid=0;
+    long long cnt=0;
+    
+    while(time_min<=time_max){
+        time_mid = (time_min + time_max)/2;
+        for(auto time:times){
+            cnt += time_mid/time;
+        }
+        
+        if(cnt>=n){
+            answer = time_mid;
+            time_max = time_mid - 1;
+        }
+        else {
+            time_min = time_mid+1;
+        }
+        cnt = 0;
+    }
+    return answer;
+}
