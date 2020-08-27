@@ -1,0 +1,50 @@
+// 등굣길 
+// 동적계획법
+
+#include <string>
+#include <vector>
+using namespace std;
+
+int solution(int m, int n, vector<vector<int>> puddles) {
+    int answer = 0;
+    
+    vector<vector<int>> map_load;
+    vector<vector<int>> dp;
+    vector<int> line, line_dp;
+    int i, j;
+    
+    for(i=0; i<=n; i++){
+        line.clear();
+        line_dp.clear();
+        for(j=0; j<=m; j++){
+            if(i==0||j==0)
+                line.push_back(0);
+            else
+                line.push_back(1);
+            line_dp.push_back(0);
+        }
+        map_load.push_back(line);
+        dp.push_back(line_dp);
+    }
+    
+    for(auto pd:puddles)
+        map_load[pd[1]][pd[0]]=0;
+    
+    
+    for(i=1; i<=n; i++){
+        for(j=1; j<=m; j++){
+            
+            if(map_load[i][j]==0)
+                dp[i][j]=0;
+            else{
+                if(i==1&&j==1)
+                    dp[i][j]=1;
+                else
+                    dp[i][j]=(dp[i-1][j]+dp[i][j-1])%1000000007;
+            }
+        }
+    }
+    answer = dp[n][m];
+    
+    return answer;
+}
