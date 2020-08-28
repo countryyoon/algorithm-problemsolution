@@ -1,0 +1,34 @@
+//네트워크 문제
+//DFS로 품
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int chk[210]={0, };
+
+
+void dfs(vector<vector<int>> computers, int &answer,int n, int idx = 0){
+
+    for(int j=0; j<n; j++){
+        if(idx!=j && computers[idx][j]==1 && chk[j]!=1){
+            chk[j]=1;
+            dfs(computers, answer, n, j);
+        }
+    }
+    
+}
+
+int solution(int n, vector<vector<int>> computers) {
+    int answer = 0;
+    
+    for(int i=0; i<n; i++){
+        if(chk[i]==0){
+            answer++;
+            dfs(computers, answer, n, i);        
+        }
+    }
+    
+    return answer;
+}
