@@ -1,0 +1,60 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+vector<int> ans;
+
+bool check_word(string begin, string end){
+    int len=begin.size();
+    int cnt=0;
+    for(int i=0; i<len; i++){
+        if(begin[i]==end[i])
+            cnt++;
+    }
+    if(cnt+1 == len)
+        return true;
+    else
+        return false;
+}
+
+void dfs(string begin, string target, vector<string> words, int cnt){
+    
+    if(begin==target){
+        ans.push_back(cnt);
+        return;
+    }
+    
+    int len = begin.size();
+    string word;
+    vector<string> word_vt;
+    int cnt_vt;
+    
+    for(int i=0; i<words.size(); i++){
+        word = words[i];
+        word_vt = words;
+        cnt_vt = cnt;
+        if(check_word(begin, word)){
+            cnt_vt++;
+            word_vt.erase(word_vt.begin()+i);
+            //cout<<cnt_vt<<":"<<begin<<endl;
+            if(word_vt.empty())
+                return ;
+            dfs(word, target, word_vt, cnt_vt);
+        }
+    }    
+}
+
+int solution(string begin, string target, vector<string> words) {
+    int answer = 0;
+    dfs(begin, target, words, 0);  
+    
+    if(ans.empty())
+        return 0;
+    
+    sort(ans.begin(), ans.end());    
+    answer = ans.front();  
+    
+    return answer;
+}
