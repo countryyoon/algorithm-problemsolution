@@ -1,0 +1,45 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <iostream>
+
+using namespace std;
+
+int gp[20001][20001]={0,};
+vector <int> visited(20001, -1);
+
+int solution(int n, vector<vector<int>> edge) {
+    int answer = 0;
+    
+    queue<int> que;
+    
+    for(auto eg:edge){
+        gp[eg[0]][eg[1]]=1;
+        gp[eg[1]][eg[0]]=1;
+    }
+    
+    visited[1]=0;
+    que.push(1);
+    int max=0;
+    
+    while(!que.empty()){
+        int nb = que.front();
+        for(int i=1; i<=n; i++){
+            if(gp[nb][i]==1 && visited[i]==-1){
+                que.push(i);
+                visited[i]=visited[nb]+1;
+            }
+            if(visited[i] > max)
+                max=visited[i];
+        }
+        que.pop();
+    }
+    
+    for(int i=1; i<=n; i++){
+        if(visited[i]==max)
+            answer++;
+    }
+    
+    
+    return answer;
+}
