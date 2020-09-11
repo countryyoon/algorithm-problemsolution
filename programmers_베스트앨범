@@ -1,0 +1,77 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+bool compare(pair<string, int> a, pair<string, int> b){
+    if(a.second==b.second){
+        if(a.first>b.first)
+            return true;
+        else
+            return false;
+    }
+    else if(a.second>b.second)
+        return true;
+    return false;
+}
+
+bool cpr(pair<int, int> a, pair<int, int> b){
+    if(a.first==b.first){
+        if(a.second<b.second)
+            return true;
+        else
+            return false;
+    }
+    else if(a.first>b.first)
+        return true;
+    return false;
+    
+}
+
+vector<int> solution(vector<string> genres, vector<int> plays) {
+    vector<int> answer;
+    vector<pair<int, int>> p_map;
+    map<string, int> total;
+    vector<pair<string, int>> total_vt;
+
+    
+    for(int i=0; i<genres.size(); i++){
+        if(total.empty())
+            total.insert(make_pair(genres[i], plays[i]));
+        else{
+            if(total.find(genres[i])!=total.end())
+                total.find(genres[i])->second += plays[i];
+            else
+                total.insert(make_pair(genres[i], plays[i]));
+        }        
+    }
+    
+    for(auto tt:total)
+        total_vt.push_back(make_pair(tt.first, tt.second));
+    
+    sort(total_vt.begin(), total_vt.end(), compare);
+    
+    for(auto tt:total_vt){
+        for(int i=0; i<genres.size(); i++){
+            if(genres[i]==tt.first){
+                p_map.push_back(make_pair(plays[i], i));
+            }
+        }
+        sort(p_map.begin(), p_map.end(), cpr);
+        int len;
+        if(p_map.size()>2)
+            len = 2;
+        else
+            len = p_map.size();
+        
+        for(int j=0; j<len; j++){
+            answer.push_back(p_map[j].second);
+        }
+        p_map.clear();
+    }  
+    
+    return answer;
+}
