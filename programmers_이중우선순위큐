@@ -1,0 +1,43 @@
+#include <string>
+#include <vector>
+#include <deque>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<string> operations) {
+    vector<int> answer;
+    deque<int> que;
+    
+    for(string oper:operations){
+        if(oper[0]=='I'){
+            string nb = "";
+            for(int i=2; i<oper.size(); i++)
+                nb += oper[i];
+            
+            int number = stoi(nb); //
+            que.push_back(number);
+            sort(que.begin(), que.end());
+        }
+        else{
+            if(!que.empty()){
+                if(oper=="D 1")
+                    que.pop_back();
+                else
+                    que.pop_front();    
+            }  
+        }
+    }
+    
+    if(que.empty()){
+        answer.push_back(0);
+        answer.push_back(0);
+    }
+    else{
+        answer.push_back(que.back());
+        answer.push_back(que.front());
+    }
+    
+    
+    return answer;
+}
