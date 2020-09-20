@@ -1,0 +1,53 @@
+#include <string>
+#include <vector>
+#include <set>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+bool compare(pair<int, int> a, pair<int, int> b){
+    if((a.second-a.first)==(b.second-b.first)){
+        if(a.first<b.first)
+            return true;
+    }
+    else if((a.second-a.first)<(b.second-b.first))
+        return true;
+    return false;
+}
+
+vector<int> solution(vector<string> gems) {
+    vector<int> answer;
+    vector<pair<int,int>> vt;
+    
+    set<string> s;
+    set<string> gem_set;
+    
+    for(string gem:gems)
+        s.insert(gem);
+    
+    for(int i=0; i<gems.size()-s.size()+1; i++){
+        int end = i;
+        gem_set = s;
+        
+        while(!gem_set.empty()){
+            if(gem_set.find(gems[end])!=gem_set.end()){
+                gem_set.erase(gem_set.find(gems[end]));
+            }
+            end++;
+            if(end>=gems.size())
+                break;
+        }
+        
+        if(gem_set.empty()){
+            vt.push_back(make_pair(i+1, end));
+        }
+        
+    }
+    sort(vt.begin(), vt.end(), compare);
+
+    answer.push_back(vt[0].first);
+    answer.push_back(vt[0].second);  
+    
+    return answer;
+}
