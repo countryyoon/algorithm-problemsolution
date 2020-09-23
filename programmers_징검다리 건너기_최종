@@ -1,0 +1,41 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+bool check(vector<int> &stones, int ans, int k){
+    int stone_cnt = 0;
+    for(int i=0; i<stones.size(); i++){
+        if(stones[i]-ans <= 0)
+            stone_cnt++;
+        else
+            stone_cnt=0;
+        
+        if(stone_cnt>=k)
+            return false;
+    }
+    return true;
+}
+
+int solution(vector<int> stones, int k) {
+    int answer = 0;
+    
+    int first = 1;
+    int last = *max_element(stones.begin(), stones.end());
+    int mid = (first+last)/2;
+    
+    while(first<=last){
+        
+        if(check(stones, mid, k))
+            first=mid+1;
+        else
+            last=mid-1;
+        
+        mid = (first+last)/2;
+    }
+    answer = first;
+
+    return answer;
+}
