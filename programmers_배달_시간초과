@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+
+int gp[51][51] = {0,};
+
+void bfs(unordered_set<int>& s, int start, int distance, int K, int N){
+    int cnt=0;
+    
+    if(s.size()==N)
+        return;
+    
+    for(int i=1; i<=N; i++){
+        if( start != i && gp[start][i]!=0 && gp[start][i]+distance <= K){
+            s.insert(i);
+            bfs(s, i, gp[start][i]+distance, K, N);
+        }
+        
+    }
+    return ;
+}
+
+int solution(int N, vector<vector<int> > road, int K) {
+    int answer = 0;
+    
+    unordered_set<int> s;
+    s.insert(1);
+    
+    for(auto rd:road){
+        if(gp[rd[0]][rd[1]]==0){
+            gp[rd[0]][rd[1]] = rd[2];
+            gp[rd[1]][rd[0]] = rd[2];
+        }
+        else if(gp[rd[0]][rd[1]]>rd[2]){
+            gp[rd[0]][rd[1]] = rd[2];
+            gp[rd[1]][rd[0]] = rd[2];          
+        }
+    }
+    
+    bfs(s, 1, 0, K, N);
+    
+    answer = s.size();
+        
+    return answer;
+}
