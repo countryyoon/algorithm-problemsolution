@@ -1,0 +1,36 @@
+#include <vector>
+#include <set>
+
+using namespace std;
+
+vector<int> solution(int n, int s) {
+    vector<int> answer;
+    multiset<int> ms;
+    
+    if(s<n){
+        answer.push_back(-1);
+        return answer;
+    }
+    else if(s==n){
+        for(int i=0; i<n; i++)
+            answer.push_back(1);
+        return answer;
+    }
+    
+    while(s!=0){
+        if(answer.size()!=n){
+            ms.insert(s/n);
+            s = s-s/n;
+            n--;
+        }
+        else{
+            ms.begin()++;
+            s--;
+        }
+    }
+    
+    for(auto nb:ms)
+        answer.push_back(nb);
+
+    return answer;
+}
