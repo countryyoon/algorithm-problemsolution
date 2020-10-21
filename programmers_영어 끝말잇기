@@ -1,0 +1,42 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+vector<int> solution(int n, vector<string> words) {
+    vector<int> answer;
+    vector<string> p(n);
+    vector<string> store;
+    
+    p[0]=words[0];
+    store.push_back(words[0]);
+    int i;
+    for(i=1; i<words.size(); i++){
+        int nb=p[(i-1)%n].size();
+        
+        if(p[(i-1)%n][nb-1]==words[i][0]){
+            if(find(store.begin(), store.end(), words[i])==store.end()){
+                store.push_back(words[i]);
+                p[i%n]=words[i];
+            }
+            else{
+                break;
+            }
+        }
+        else{
+            break;
+        }
+    }
+    if(i==words.size()){
+        answer.push_back(0);
+        answer.push_back(0);
+    }
+    else{
+        answer.push_back(i%n+1);
+        answer.push_back(i/n+1);
+    }
+    
+    return answer;
+}
