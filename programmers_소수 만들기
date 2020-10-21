@@ -1,0 +1,42 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int ans=0;
+
+bool check_nb(int n){
+    int c=0;
+    for(int i=1; i<=n/2+1; i++){
+        if(n%i==0)
+            c++;
+    }
+    if(c==1)
+        return true;
+    else
+        return false;     
+}
+
+void dfs(vector<int>& nums, int n, int cnt, int sum){
+    
+    if(nums.size()-n<3-cnt)
+        return;
+    
+    if(cnt==3){
+        if(check_nb(sum))
+            ans++;  
+        return;
+    }
+    
+    dfs(nums, n+1, cnt+1, sum+nums[n]);
+    dfs(nums, n+1, cnt, sum);
+    
+}
+
+int solution(vector<int> nums) {
+    int answer = -1;
+    
+    dfs(nums, 0, 0, 0);
+    answer=ans;
+
+    return answer;
+}
