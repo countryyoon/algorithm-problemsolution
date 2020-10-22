@@ -1,0 +1,36 @@
+#include <string>
+#include <vector>
+#include <numeric>
+#include <iostream>
+using namespace std;
+
+int dp[2000][2000]={0,};
+
+int solution(vector<int> cookie) {
+    int answer = -1;
+    
+    for(int i=0; i<cookie.size(); i++){
+        for(int j=i; j<cookie.size(); j++)
+            dp[i][j]=accumulate(cookie.begin()+i, cookie.begin()+j+1, 0);
+    }
+    
+    int sum=0;
+    
+    for(int i=0; i<cookie.size(); i++){
+        for(int j=cookie.size()-1; j>i; j--){
+            if(dp[i][j]<=sum*2)
+                break;
+            for(int k=j-1; k>=i; k--){
+                if(dp[i][k]*2==dp[i][j]){
+                    if(sum<dp[i][k])
+                        sum=dp[i][k];
+                    break;
+                }   
+            }
+        }
+    }
+    
+    answer=sum;
+    
+    return answer;
+}
