@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+string solution(int n) {
+    string answer = "";
+    int nb[4] = {0, 1, 2, 4};
+    int share, rest;
+    
+    while(n!=0){
+        share = n/3;
+        rest = n%3;
+        if(rest!=0){
+            answer = to_string(nb[rest])+answer;
+            n/=3;
+        }
+        else{
+            answer = "4"+answer;
+            n=share-1;
+        }        
+    }
+   
+    return answer;
+}
