@@ -1,0 +1,87 @@
+#include <vector>
+#include <queue>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int chk[110][110]={0, };
+int dx[4]={0, 0, 1, -1};
+int dy[4]={1, -1, 0, 0};
+
+int BFS(vector<vector<int>>& pic, int sx, int sy, int m, int n, int val){  
+    queue<vector<int>> q;
+    vector<int> p(2);
+    p[0]=sx;
+    p[1]=sy;
+    
+    int area=1;
+    chk[sx][sy]=1;
+    
+    q.push(p);
+    
+    int x, y;
+    
+    while(!q.empty()){
+        sx = q.front()[0];
+        sy = q.front()[1];
+        q.pop();
+        
+        for(int i=0; i<4; i++){
+            x=sx+dx[i];
+            y=sy+dy[i];
+            if(x<0 || x>=m || y<0 || y>=n || chk[x][y]==1 || pic[x][y] != val)
+                continue;
+            p[0]=x, p[1]=y;
+            q.push(p);
+            chk[p[0]][p[1]]=1;
+            area++;
+        }    
+    }
+    return area;
+}
+
+vector<int> find_start(vector<vector<int>>& pic, int m, int n){ 
+    vector<int> p(2);
+    
+    for(int i=0; i<m; i++){
+        for(int j=0; j<n; j++){
+            if(chk[i][j]==0 && pic[i][j]!=0){
+                p[0]=i;
+                p[1]=j;
+                return p;
+            }
+        }
+    }
+    p[0]=-1;
+    p[1]=-1;
+    return p;
+}
+
+// 전역 변수를 정의할 경우 함수 내에 초기화 코드를 꼭 작성해주세요.
+vector<int> solution(int m, int n, vector<vector<int>> picture) {
+    int number_of_area = 0;
+    int max_size_of_one_area = 0;
+    
+    for(int i=0; i<m; i++){
+        for(int j=0; j<n; j++){
+            chk[i][j]=0;
+        }
+    }
+    
+    vector<int> p(2,0);
+    
+    while(1){
+        p=find_start(picture, m, n);
+        if(p[0]==-1)
+            break;
+        int area = BFS(picture, p[0], p[1], m, n, picture[p[0]][p[1]]);
+        number_of_area++;
+        max_size_of_one_area = max(max_size_of_one_area, area);
+    }
+    
+    vector<int> answer(2);
+    answer[0] = number_of_area;
+    answer[1] = max_size_of_one_area;
+    return answer;
+}
