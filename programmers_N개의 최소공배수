@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+int get_gcd(int a, int b){
+    while(b!=0){
+        int r=a%b;
+        a=b;
+        b=r;
+    }
+    return a;
+}
+
+int solution(vector<int> arr) {
+    int answer = 0;
+    int lcm = 1;
+    int gcd = 1;
+    
+    for(int i=0; i<arr.size(); i++){
+        gcd = get_gcd(lcm, arr[i]);
+        lcm = (arr[i]*lcm)/gcd;
+    }
+    answer = lcm;
+       
+    return answer;
+}
