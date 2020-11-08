@@ -1,0 +1,38 @@
+#include <string>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+vector<int> solution(string s) {
+    vector<int> answer;
+    string new_s = "";
+    
+    int zero_cnt = 0;
+    int trans_cnt = 0;
+    
+    while(s!="1"){
+        string new_s = "";
+        for(int i=0; i<s.size(); i++){
+            if(s[i]!='0')
+                new_s += s[i];
+            else
+                zero_cnt++;
+        }
+        
+        int len = new_s.size();
+        string bin_str = "";
+        
+        while(len!=0){
+            bin_str += to_string(len%2);
+            len /= 2;
+        }
+        s=bin_str;
+        trans_cnt++;
+    }
+    
+    answer.push_back(trans_cnt);
+    answer.push_back(zero_cnt);
+    
+    return answer;
+}
