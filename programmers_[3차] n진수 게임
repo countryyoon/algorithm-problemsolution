@@ -1,0 +1,47 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+using namespace std;
+
+string solution(int n, int t, int m, int p) {
+    string answer = "";
+    string wh_nb = "";
+    
+    for(int i=m*t; i>=0; i--){        
+        if(i==0)
+            wh_nb+=to_string(i);
+        else{
+            int numb=i;
+            int nb=0;
+            while(numb>0){
+                nb = numb%n;
+                numb /= n;
+                
+                if(nb>=10){
+                    char a = nb+55;
+                    wh_nb+=a;
+                }
+                else{
+                    wh_nb+=to_string(nb);  
+                }            
+            }
+        }
+        
+    }
+    reverse(wh_nb.begin(), wh_nb.end());
+    wh_nb = '0'+wh_nb;
+    
+    int cnt=0;
+    int i=1;
+    while(cnt<t){
+        if(i%m==p%m){
+            answer+=wh_nb[i];
+            cnt++;
+        }
+        i++;    
+    }
+    
+    return answer;
+}
