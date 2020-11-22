@@ -1,0 +1,82 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+string tolow(string a){
+    
+    string str = "";
+    
+    for(int i=0; i<a.size(); i++)
+        str+=tolower(a[i]);
+    
+    return str;
+}
+
+bool compare(vector<string> a, vector<string> b){
+
+    if(tolow(a[0])>tolow(b[0]))
+        return false;
+    else if(tolow(a[0])==tolow(b[0])){
+        if(stoi(a[1])==stoi(b[1])){
+            if(stoi(a[3])>stoi(b[3]))
+                return false;
+        }
+        else if(stoi(a[1])>stoi(b[1]))
+            return false;
+    }
+
+    return true;
+        
+}
+
+
+vector<string> solution(vector<string> files) {
+    vector<string> answer;
+    vector<vector<string>> f;
+    int cnt=1;
+    for(auto file:files){
+        int sz = file.size();
+        
+        string nb = "";
+        string tl = "";
+        vector<string> fl(4);
+        int chk1 = -1;
+        int chk2 = -1;
+        
+        for(int i=1; i<sz; i++){
+            if( (isdigit(file[i-1])==0 && isdigit(file[i])!=0) && chk1==-1 ){
+                chk1 = i;
+            }
+            else if( (isdigit(file[i-1])!=0 && isdigit(file[i])==0) && chk2==-1 )
+                chk2 = i;
+        }
+        
+        string hd = file.substr(0, chk1);
+        if(chk2!=-1){
+            nb = file.substr(chk1, chk2-chk1);
+            tl = file.substr(chk2, sz-chk2);
+        }
+        else{
+            nb = file.substr(chk1, sz-chk1);
+        }
+        
+        fl[0]=hd;
+        fl[1]=nb;
+        fl[2]=tl;
+        fl[3]=to_string(cnt);
+        
+        f.push_back(fl);
+        cnt++;
+    }
+    
+    sort(f.begin(), f.end(), compare);
+    
+    for(auto ff:f){
+        string fname = ff[0]+ff[1]+ff[2];
+        answer.push_back(fname);
+    }
+    
+    return answer;
+}
