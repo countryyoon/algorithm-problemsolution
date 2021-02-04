@@ -1,0 +1,42 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int solution(vector<int> money) {
+    int answer = 0;
+    int sz = money.size();
+    vector<vector<int>> dp;
+    vector<int> d(sz);
+    dp.push_back(d);
+    dp.push_back(d);
+    
+    // 0번째 줄은 첫번째거 포함O, 마지막꺼 X
+    // 1번째 줄은 첫번째거 포함X, 마지막꺼 O
+    dp[0][0] = money[0];
+    dp[0][1] = money[0];
+    dp[1][0] = 0;
+    dp[1][1] = money[1];
+    
+    for(int i=2; i<sz-1; i++){
+        if(dp[0][i-1]>dp[0][i-2]+money[i]){
+            dp[0][i]=dp[0][i-1];
+        }
+        else{
+            dp[0][i]=dp[0][i-2]+money[i];
+        }
+        
+        if(dp[1][i-1]>dp[1][i-2]+money[i]){
+            dp[1][i]=dp[1][i-1];
+        }
+        else{
+            dp[1][i]=dp[1][i-2]+money[i];
+        }
+    }
+    dp[0][sz-1] = dp[0][sz-2];
+    dp[1][sz-1] = dp[1][sz-2]>dp[1][sz-3]+money[sz-1] ? dp[1][sz-2] : dp[1][sz-3]+money[sz-1];
+    
+    answer = dp[0][sz-1]>dp[1][sz-1]?dp[0][sz-1]:dp[1][sz-1];
+    
+    return answer;
+}
