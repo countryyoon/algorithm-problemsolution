@@ -1,0 +1,28 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> solution(vector<vector<int>> arr1, vector<vector<int>> arr2) {
+    vector<vector<int>> answer;
+    int r = arr1.size();
+    int c = arr2[0].size();
+    int sz = arr2.size();
+    
+    vector<int> col(c);
+    for(int i=0; i<r; i++){
+        answer.push_back(col);
+    }
+
+    for(int i=0; i<r; i++){
+        for(int j=0; j<c; j++){
+            int tmp = 0;
+            for(int k=0; k<sz; k++){
+                tmp+=arr1[i][k]*arr2[k][j];
+            }
+            answer[i][j] = tmp;
+        }
+    }
+    
+    return answer;
+}
