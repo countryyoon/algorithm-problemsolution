@@ -1,0 +1,30 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+int ans = 0;
+
+void DFS(vector<int> nums, int finalNum, int target) {   
+    if (nums.size()==0 && finalNum == target) {
+        ans++;
+        return ;
+    }
+    
+    if (nums.size()==0) 
+        return;
+
+    int plusSum = finalNum + nums[0];
+    int minusSum = finalNum - nums[0];       
+    nums.erase(nums.begin());                
+    DFS(nums, plusSum, target);
+    DFS(nums, minusSum, target);
+}
+
+int solution(vector<int> numbers, int target) {
+    int answer = 0;
+    DFS(numbers, 0, target);    
+    answer = ans;
+    return answer;
+}
